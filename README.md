@@ -46,6 +46,10 @@ In addition, the constructor can be sent a string with custom flags that changes
 
 For example, you could send the string `"bDe"` to only convert double backticks, convert dashes according to the "old school dashes" setting, and convert ellipses.
 
+## NuGet
+
+https://www.nuget.org/packages/SmartyPantsNet
+
 ## Authors
 
 The port is created by Andy Graulund, based on Michel Fortin's [PHP port](https://github.com/michelf/php-smartypants), which is in turn based on the original [SmartyPants by John Gruber](https://daringfireball.net/projects/smartypants/).
