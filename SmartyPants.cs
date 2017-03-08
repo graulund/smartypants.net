@@ -22,7 +22,7 @@ namespace SmartyPantsNet {
 	// SmartyPants Parser Class
 	//
 
-	class SmartyPants {
+	public class SmartyPants {
 
 		//// Version ////
 
