@@ -1,6 +1,6 @@
 # SmartyPants.Net
 
-A simplified .NET port of the typography prettifier framework SmartyPants.
+A simplified .NET port of the typography prettifier framework [SmartyPants](https://daringfireball.net/projects/smartypants/).
 
 Note however, that **this library only works with plain text strings**, and is seen as a solution that's independent of the medium — so it does not assume that HTML entities or tags are possible.
 
