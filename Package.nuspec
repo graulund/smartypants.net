@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>SmartyPantsNet</id>
+    <title>SmartyPants.Net</title>
+    <version>1.0.1</version>
+    <authors>Andy Graulund, Michel Fortin, John Gruber</authors>
+    <owners>Andy Graulund</owners>
+    <licenseUrl>https://github.com/graulund/smartypants.net/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/graulund/smartypants.net</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A .NET port of the typography prettifier framework SmartyPants, but for unicode plain text only</description>
+    <releaseNotes>Made the class actually usable. Yay.</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+  </metadata>
+</package>
