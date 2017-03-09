@@ -26,7 +26,7 @@ namespace SmartyPantsNet {
 
 		//// Version ////
 
-		public const string SMARTYPANTSLIB_VERSION = "1.0.1";
+		public const string SMARTYPANTSLIB_VERSION = "1.0.2";
 
 		//// Presets
 
