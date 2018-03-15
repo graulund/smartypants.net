@@ -3,14 +3,14 @@
   <metadata>
     <id>SmartyPantsNet</id>
     <title>SmartyPants.Net</title>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <authors>Andy Graulund, Michel Fortin, John Gruber</authors>
     <owners>Andy Graulund</owners>
     <licenseUrl>https://github.com/graulund/smartypants.net/blob/master/LICENSE.txt</licenseUrl>
     <projectUrl>https://github.com/graulund/smartypants.net</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A .NET port of the typography prettifier framework SmartyPants, but for unicode plain text only</description>
-    <releaseNotes>Fixed NuGet package structure</releaseNotes>
-    <copyright>Copyright 2017</copyright>
+    <releaseNotes>Upgraded to .Net Standard 2.0</releaseNotes>
+    <copyright>Copyright 2018</copyright>
   </metadata>
 </package>
