@@ -1,16 +1,15 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 
 namespace SmartyPantsNet.Tests
 {
-    [TestFixture]
     public class SmartyPantsTests
     {
         readonly SmartyPants defaultSmartyPants = new SmartyPants();
 
-        [Test]
+        [Fact]
         public void NothingTest()
         {
-            Assert.AreEqual(
+            Assert.Equal(
                 "'Ice monkeys' throw \"space rocks\" -- when in space...",
                 new SmartyPants(SmartyPants.ATTR_DO_NOTHING).Educate(
                     "'Ice monkeys' throw \"space rocks\" -- when in space..."
@@ -18,10 +17,10 @@ namespace SmartyPantsNet.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void SingleQuoteTest()
         {
-            Assert.AreEqual(
+            Assert.Equal(
                 "I’m from the ’80s",
                 defaultSmartyPants.Educate(
                     "I'm from the '80s"
@@ -29,10 +28,10 @@ namespace SmartyPantsNet.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void SingleQuotesTest()
         {
-            Assert.AreEqual(
+            Assert.Equal(
                 "‘Magic’, said Steven ‘Rock Hard’ Jones as he booted up his ‘Commodore 64’",
                 defaultSmartyPants.Educate(
                     "'Magic', said Steven 'Rock Hard' Jones as he booted up his 'Commodore 64'"
@@ -40,10 +39,10 @@ namespace SmartyPantsNet.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void DoubleQuotesTest()
         {
-            Assert.AreEqual(
+            Assert.Equal(
                 "“Magic”, said Steven “Rock Hard” Jones as he booted up his “Commodore 64”",
                 defaultSmartyPants.Educate(
                     "\"Magic\", said Steven \"Rock Hard\" Jones as he booted up his \"Commodore 64\""
@@ -51,10 +50,10 @@ namespace SmartyPantsNet.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void SingleBacktickQuotesTest()
         {
-            Assert.AreEqual(
+            Assert.Equal(
                 "‘Magic’, said Steven ‘Rock Hard’ Jones as he booted up his ‘Commodore 64’",
                 new SmartyPants("B").Educate(
                     "`Magic', said Steven `Rock Hard' Jones as he booted up his `Commodore 64'"
@@ -62,10 +61,10 @@ namespace SmartyPantsNet.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void DoubleBacktickQuotesTest()
         {
-            Assert.AreEqual(
+            Assert.Equal(
                 "“Magic”, said Steven “Rock Hard” Jones as he booted up his “Commodore 64”",
                 defaultSmartyPants.Educate(
                     "``Magic'', said Steven ``Rock Hard'' Jones as he booted up his ``Commodore 64''"
@@ -73,10 +72,10 @@ namespace SmartyPantsNet.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void NestedQuotesTest()
         {
-            Assert.AreEqual(
+            Assert.Equal(
                 "He said, “‘Quoted’ words in a larger quote.”",
                 defaultSmartyPants.Educate(
                     "He said, \"'Quoted' words in a larger quote.\""
@@ -84,10 +83,10 @@ namespace SmartyPantsNet.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void EmDashTest()
         {
-            Assert.AreEqual(
+            Assert.Equal(
                 "Now — and then",
                 defaultSmartyPants.Educate(
                     "Now -- and then"
@@ -95,10 +94,10 @@ namespace SmartyPantsNet.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void ShortEnDashTest()
         {
-            Assert.AreEqual(
+            Assert.Equal(
                 "Now — and then. A story of the years 1980–2000.",
                 new SmartyPants(SmartyPants.ATTR_LONG_EM_DASH_SHORT_EN).Educate(
                     "Now --- and then. A story of the years 1980--2000."
@@ -106,10 +105,10 @@ namespace SmartyPantsNet.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void LongEnDashTest()
         {
-            Assert.AreEqual(
+            Assert.Equal(
                 "Now — and then. A story of the years 1980–2000.",
                 new SmartyPants(SmartyPants.ATTR_SHORT_EM_DASH_LONG_EN).Educate(
                     "Now -- and then. A story of the years 1980---2000."
@@ -117,10 +116,10 @@ namespace SmartyPantsNet.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void EllipsisTest()
         {
-            Assert.AreEqual(
+            Assert.Equal(
                 "I love kids… is that weird to say?",
                 defaultSmartyPants.Educate(
                     "I love kids... is that weird to say?"
@@ -128,10 +127,10 @@ namespace SmartyPantsNet.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void EscapedQuotesTest()
         {
-            Assert.AreEqual(
+            Assert.Equal(
                 "Straight 'quotes' are not ‘cool’. Say what? Straight \"quotes\" are not “cool”!",
                 defaultSmartyPants.Educate(
                     "Straight \\'quotes\\' are not 'cool'. Say what? Straight \\\"quotes\\\" are not \"cool\"!"
@@ -139,10 +138,10 @@ namespace SmartyPantsNet.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void ManualSettingsTest()
         {
-            Assert.AreEqual(
+            Assert.Equal(
                 "Now — and then. A ‘sublime’ story of the years 1980–2000…",
                 new SmartyPants("qei").Educate(
                     "Now -- and then. A 'sublime' story of the years 1980---2000..."
@@ -150,10 +149,10 @@ namespace SmartyPantsNet.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void StupefyTest()
         {
-            Assert.AreEqual(
+            Assert.Equal(
                 "He said, \"'stupify' me\" -- or did he...?",
                 new SmartyPants(SmartyPants.ATTR_STUPEFY).Educate(
                     "He said, “‘stupify’ me” — or did he…?"
@@ -161,16 +160,16 @@ namespace SmartyPantsNet.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void UnicodeTest()
         {
-            Assert.AreEqual(
+            Assert.Equal(
                 "ÆÆÆ “øøø” ååå — çecil",
                 defaultSmartyPants.Educate(
                     "ÆÆÆ \"øøø\" ååå -- çecil"
                 )
             );
-            Assert.AreEqual(
+            Assert.Equal(
                 "ドラゴン “龍” 용 — ঘুড়ি বিশেষ",
                 defaultSmartyPants.Educate(
                     "ドラゴン \"龍\" 용 -- ঘুড়ি বিশেষ"
