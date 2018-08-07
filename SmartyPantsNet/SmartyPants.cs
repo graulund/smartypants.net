@@ -16,13 +16,15 @@
 
 using System.Text.RegularExpressions;
 
-namespace SmartyPantsNet {
+namespace SmartyPantsNet
+{
 
 	//
 	// SmartyPants Parser Class
 	//
 
-	public class SmartyPants {
+	public class SmartyPants
+	{
 
 		//// Version ////
 
@@ -74,7 +76,8 @@ namespace SmartyPantsNet {
 
 		//// Parser Implementation ////
 
-		public SmartyPants(string attr = ATTR_DEFAULT) {
+		public SmartyPants(string attr = ATTR_DEFAULT)
+		{
 		//
 		// Initialize a parser with certain attributes.
 		//
@@ -92,37 +95,44 @@ namespace SmartyPantsNet {
 		// i : inverted old school dashes
 		// e : ellipses
 		//
-			if (attr == "0") {
+			if (attr == "0")
+			{
 				DoNothing   = 1;
 			}
-			else if (attr == "1") {
+			else if (attr == "1")
+			{
 				// Do everything, turn all options on.
 				DoQuotes    = 1;
 				DoBackticks = 1;
 				DoDashes    = 1;
 				DoEllipses  = 1;
 			}
-			else if (attr == "2") {
+			else if (attr == "2")
+			{
 				// Do everything, turn all options on, use old school dash shorthand.
 				DoQuotes    = 1;
 				DoBackticks = 1;
 				DoDashes    = 2;
 				DoEllipses  = 1;
 			}
-			else if (attr == "3") {
+			else if (attr == "3")
+			{
 				// Do everything, turn all options on, use inverted old school dash shorthand.
 				DoQuotes    = 1;
 				DoBackticks = 1;
 				DoDashes    = 3;
 				DoEllipses  = 1;
 			}
-			else if (attr == "-1") {
+			else if (attr == "-1")
+			{
 				// Special "stupefy" mode.
 				DoStupefy   = 1;
 			}
-			else {
+			else
+			{
 				var chars = attr.ToCharArray();
-				foreach (char c in chars) {
+				foreach (char c in chars)
+				{
 					if      (c == 'q') { DoQuotes    = 1; }
 					else if (c == 'b') { DoBackticks = 1; }
 					else if (c == 'B') { DoBackticks = 2; }
@@ -130,53 +140,62 @@ namespace SmartyPantsNet {
 					else if (c == 'D') { DoDashes    = 2; }
 					else if (c == 'i') { DoDashes    = 3; }
 					else if (c == 'e') { DoEllipses  = 1; }
-					else {
-						// Unknown attribute option, ignore.
-					}
+					else { /* Unknown attribute option, ignore. */ }
 				}
 			}
 		}
 
-		public string Educate(string t) {
+		public string Educate(string t)
+		{
 
-			if (DoNothing != 0) {
+			if (DoNothing != 0)
+			{
 				return t;
 			}
 
 			t = ShieldEscapes(t);
 
-			if (DoDashes != 0) {
-				if (DoDashes == 1) {
+			if (DoDashes != 0)
+			{
+				if (DoDashes == 1)
+				{
 					t = EducateDashes(t);
 				}
 
-				else if (DoDashes == 2) {
+				else if (DoDashes == 2)
+				{
 					t = EducateDashesOldSchool(t);
 				}
 
-				else if (DoDashes == 3) {
+				else if (DoDashes == 3)
+				{
 					t = EducateDashesOldSchoolInverted(t);
 				}
 			}
 
-			if (DoEllipses != 0) {
+			if (DoEllipses != 0)
+			{
 				t = EducateEllipses(t);
 			}
 
 			// Note: backticks need to be processed before quotes.
-			if (DoBackticks != 0) {
+			if (DoBackticks != 0)
+			{
 				t = EducateBackticks(t);
 
-				if (DoBackticks == 2) {
+				if (DoBackticks == 2)
+				{
 					t = EducateSingleBackticks(t);
 				}
 			}
 
-			if (DoQuotes != 0) {
+			if (DoQuotes != 0)
+			{
 				t = EducateQuotes(t);
 			}
 
-			if (DoStupefy != 0) {
+			if (DoStupefy != 0)
+			{
 				t = StupefyEntities(t);
 			}
 
@@ -185,7 +204,8 @@ namespace SmartyPantsNet {
 			return t;
 		}
 
-		protected string EducateQuotes(string text) {
+		protected string EducateQuotes(string text)
+		{
 		//
 		//   Parameter:  String.
 		//
@@ -252,7 +272,8 @@ namespace SmartyPantsNet {
 			return text;
 		}
 
-		protected string EducateBackticks(string text) {
+		protected string EducateBackticks(string text)
+		{
 		//
 		//   Parameter:  String.
 		//   Returns:    The string, with ``backticks'' -style double quotes
@@ -268,7 +289,8 @@ namespace SmartyPantsNet {
 			return text;
 		}
 
-		protected string EducateSingleBackticks(string text) {
+		protected string EducateSingleBackticks(string text)
+		{
 		//
 		//   Parameter:  String.
 		//   Returns:    The string, with `backticks' -style single quotes
@@ -284,7 +306,8 @@ namespace SmartyPantsNet {
 			return text;
 		}
 
-		protected string EducateDashes(string text) {
+		protected string EducateDashes(string text)
+		{
 		//
 		//   Parameter:  String.
 		//
@@ -297,7 +320,8 @@ namespace SmartyPantsNet {
 			return text;
 		}
 
-		protected string EducateDashesOldSchool(string text) {
+		protected string EducateDashesOldSchool(string text)
+		{
 		//
 		//   Parameter:  String.
 		//
@@ -312,7 +336,8 @@ namespace SmartyPantsNet {
 			return text;
 		}
 
-		protected string EducateDashesOldSchoolInverted(string text) {
+		protected string EducateDashesOldSchoolInverted(string text)
+		{
 		//
 		//   Parameter:  String.
 		//
@@ -334,7 +359,8 @@ namespace SmartyPantsNet {
 			return text;
 		}
 
-		protected string EducateEllipses(string text) {
+		protected string EducateEllipses(string text)
+		{
 		//
 		//   Parameter:  String.
 		//   Returns:    The string, with each instance of "..." translated to
@@ -351,7 +377,8 @@ namespace SmartyPantsNet {
 			return text;
 		}
 
-		protected string StupefyEntities(string text) {
+		protected string StupefyEntities(string text)
+		{
 		//
 		//   Parameter:  String.
 		//   Returns:    The string, with each SmartyPants HTML entity translated to
@@ -372,7 +399,8 @@ namespace SmartyPantsNet {
 			return text;
 		}
 
-		protected string ShieldEscapes(string text) {
+		protected string ShieldEscapes(string text)
+		{
 		//
 		//   Parameter:  String.
 		//   Returns:    The string, with after processing the following backslash
@@ -399,7 +427,8 @@ namespace SmartyPantsNet {
 			return text;
 		}
 
-		protected string UnshieldEscapes(string text) {
+		protected string UnshieldEscapes(string text)
+		{
 
 			text = text.Replace("%%SMARTYPANTS_ESCAPED_BACKSLASH%%", "\\");
 			text = text.Replace("%%SMARTYPANTS_ESCAPED_DOUBLE_QUOTE%%", "\"");
@@ -410,6 +439,5 @@ namespace SmartyPantsNet {
 
 			return text;
 		}
-
 	}
 }
