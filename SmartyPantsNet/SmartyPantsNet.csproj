@@ -1,9 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>SmartyPantsNet</PackageId>
+    <Title>SmartyPants.Net</Title>
+    <Description>A .NET port of the typography prettifier framework SmartyPants, but for unicode plain text only</Description>
     <Version>1.0.3</Version>
-    <Authors>Andreas R. L. Christiansen, Andy Graulund, Michel Fortin, John Gruber</Authors>
+    <PackageReleaseNotes>Upgraded to .Net Standard 2.0</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseUrl>https://github.com/graulund/smartypants.net/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/graulund/smartypants.net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/graulund/smartypants.net</RepositoryUrl>
+    <Authors>Daniel Preisler Larsen, Andreas R. L. Christiansen, Andy Graulund (owner), Michel Fortin, John Gruber</Authors>
+    <Copyright>Copyright 2018</Copyright>
   </PropertyGroup>
 
 </Project>
