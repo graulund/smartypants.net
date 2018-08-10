@@ -18,30 +18,17 @@ using System.Text.RegularExpressions;
 
 namespace SmartyPantsNet
 {
-
-	//
-	// SmartyPants Parser Class
-	//
-
 	public class SmartyPants
 	{
-
-		//// Version ////
-
 		public const string SMARTYPANTSLIB_VERSION = "1.0.2";
 
-		//// Presets
+		//// Presets ////
 
-		// SmartyPants does nothing at all
-		public const string ATTR_DO_NOTHING             =  "0";
-		// "--" for em-dashes; no en-dash support
-		public const string ATTR_EM_DASH                =  "1";
-		// "---" for em-dashes; "--" for en-dashes
-		public const string ATTR_LONG_EM_DASH_SHORT_EN  =  "2";
-		// "--" for em-dashes; "---" for en-dashes
-		public const string ATTR_SHORT_EM_DASH_LONG_EN  =  "3";
-		// "--" for em-dashes; "---" for en-dashes
-		public const string ATTR_STUPEFY                = "-1";
+		public const string ATTR_DO_NOTHING             =  "0"; // SmartyPants does nothing at all
+		public const string ATTR_EM_DASH                =  "1"; // "--" for em-dashes; no en-dash support
+		public const string ATTR_LONG_EM_DASH_SHORT_EN  =  "2"; // "---" for em-dashes; "--" for en-dashes
+		public const string ATTR_SHORT_EM_DASH_LONG_EN  =  "3"; // "--" for em-dashes; "---" for en-dashes
+		public const string ATTR_STUPEFY                = "-1"; // "--" for em-dashes; "---" for en-dashes
 
 		// The default preset: ATTR_EM_DASH
 		public const string ATTR_DEFAULT = ATTR_EM_DASH;
@@ -74,27 +61,26 @@ namespace SmartyPantsNet
 		public string EnDash = "\u2013";
 		public string Ellipsis = "\u2026";
 
-		//// Parser Implementation ////
 
+		/// <summary>
+		///  Initialize a parser with certain attributes.
+		///
+		///  Parser attributes:
+		///  0 : do nothing
+		///  1 : set all
+		///  2 : set all, using old school en- and em- dash shortcuts
+		///  3 : set all, using inverted old school en and em- dash shortcuts
+		///
+		///  q : quotes
+		///  b : backtick quotes (``double'' only)
+		///  B : backtick quotes (``double'' and `single')
+		///  d : dashes
+		///  D : old school dashes
+		///  i : inverted old school dashes
+		///  e : ellipses
+		/// </summary>
 		public SmartyPants(string attr = ATTR_DEFAULT)
 		{
-		//
-		// Initialize a parser with certain attributes.
-		//
-		// Parser attributes:
-		// 0 : do nothing
-		// 1 : set all
-		// 2 : set all, using old school en- and em- dash shortcuts
-		// 3 : set all, using inverted old school en and em- dash shortcuts
-		//
-		// q : quotes
-		// b : backtick quotes (``double'' only)
-		// B : backtick quotes (``double'' and `single')
-		// d : dashes
-		// D : old school dashes
-		// i : inverted old school dashes
-		// e : ellipses
-		//
 			if (attr == "0")
 			{
 				DoNothing   = 1;
@@ -144,6 +130,7 @@ namespace SmartyPantsNet
 				}
 			}
 		}
+
 
 		public string Educate(string t)
 		{
@@ -204,190 +191,167 @@ namespace SmartyPantsNet
 			return t;
 		}
 
+
+		/// <summary>
+		/// Returns the input string, with "educated" curly quote HTML entities.
+		///
+		/// Example input:  "Isn't this fun?"
+		/// Example output: &#8220;Isn&#8217;t this fun?&#8221;
+		/// </summary>
 		protected string EducateQuotes(string text)
 		{
-		//
-		//   Parameter:  String.
-		//
-		//   Returns:    The string, with "educated" curly quote HTML entities.
-		//
-		//   Example input:  "Isn't this fun?"
-		//   Example output: &#8220;Isn&#8217;t this fun?&#8221;
-		//
 			var dqOpen  = SmartDoubleQuoteOpen;
 			var dqClose = SmartDoubleQuoteClose;
 			var sqOpen  = SmartSingleQuoteOpen;
 			var sqClose = SmartSingleQuoteClose;
 
 			// Punctuation character class
-
 			var punctClass = "[!\"#\\$\\%'()*+,-.\\/:;<=>?\\@\\[\\\\\\]\\^_`{|}~]";
 
 			// Special case if the very first character is a quote
 			// followed by punctuation at a non-word-break. Close the quotes by brute force:
-
 			text = new Regex("^'(?=" + punctClass + "\\B)").Replace(text, sqClose);
 			text = new Regex("^\"(?=" + punctClass + "\\B)").Replace(text, dqClose);
 
 			// Special case for double sets of quotes, e.g.:
 			//   <p>He said, "'Quoted' words in a larger quote."</p>
-
 			text = new Regex("\"'(?=\\w)").Replace(text, dqOpen + sqOpen);
 			text = new Regex("'\"(?=\\w)").Replace(text, sqOpen + dqOpen);
 
 			// Special case for decade abbreviations (the '80s):
-
 			text = new Regex("'(?=\\d{2}s)").Replace(text, sqClose);
 
 			var closeClass = "[^ \t\r\n\\[\\{\\(\\-]";
 
 			// Get most opening single quotes:
-
 			text = new Regex("(\\s|--|\u2013|\u2014)'(?=\\w)")
 				.Replace(text, "$1" + sqOpen);
 
 			// Single closing quotes:
-
 			text = new Regex("(" + closeClass + ")?'(?(1)|(?=\\s|s\\b))", RegexOptions.IgnoreCase)
 				.Replace(text, "$1" + sqClose);
 
 			// Any remaining single quotes should be opening ones:
-
 			text = text.Replace("'", sqOpen);
 
 			// Get most opening double quotes:
-
 			text = new Regex("(\\s|--|\u2013|\u2014)\"(?=\\w)")
 				.Replace(text, "$1" + dqOpen);
 
 			// Double closing quotes:
-
 			text = new Regex("(" + closeClass + ")?\"(?(1)|(?=\\s))")
 				.Replace(text, "$1" + dqClose);
 
 			// Any remaining quotes should be opening ones.
-
 			text = text.Replace("\"", dqOpen);
 
 			return text;
 		}
 
+
+		/// <summary>
+		/// Returns the input string, with ``backticks'' -style double quotes
+		/// translated into HTML curly quote entities.
+		///
+		/// Example input:  ``Isn't this fun?''
+		/// Example output: &#8220;Isn't this fun?&#8221;
+		/// </summary>
 		protected string EducateBackticks(string text)
 		{
-		//
-		//   Parameter:  String.
-		//   Returns:    The string, with ``backticks'' -style double quotes
-		//               translated into HTML curly quote entities.
-		//
-		//   Example input:  ``Isn't this fun?''
-		//   Example output: &#8220;Isn't this fun?&#8221;
-		//
-
 			text = text.Replace("``", BacktickDoubleQuoteOpen);
 			text = text.Replace("''", BacktickDoubleQuoteClose);
 
 			return text;
 		}
 
+
+		/// <summary>
+		/// Returns the input string, with `backticks' -style single quotes
+		/// translated into HTML curly quote entities.
+		///
+		/// Example input:  `Isn't this fun?'
+		/// Example output: &#8216;Isn&#8217;t this fun?&#8217;
+		/// </summary>
 		protected string EducateSingleBackticks(string text)
 		{
-		//
-		//   Parameter:  String.
-		//   Returns:    The string, with `backticks' -style single quotes
-		//               translated into HTML curly quote entities.
-		//
-		//   Example input:  `Isn't this fun?'
-		//   Example output: &#8216;Isn&#8217;t this fun?&#8217;
-		//
-
 			text = text.Replace("`", BacktickSingleQuoteOpen);
 			text = text.Replace("'", BacktickSingleQuoteClose);
 
 			return text;
 		}
 
+
+		/// <summary>
+		/// Returns the input string, with each instance of "--" translated to an em-dash HTML entity.
+		/// </summary>
 		protected string EducateDashes(string text)
 		{
-		//
-		//   Parameter:  String.
-		//
-		//   Returns:    The string, with each instance of "--" translated to
-		//               an em-dash HTML entity.
-		//
-
 			text = text.Replace("--", EmDash);
 
 			return text;
 		}
 
+
+		/// <summary>
+		/// Returns the input string, with each instance of "--" translated to
+		/// an en-dash HTML entity, and each "---" translated to
+		/// an em-dash HTML entity.
+		/// </summary>
 		protected string EducateDashesOldSchool(string text)
 		{
-		//
-		//   Parameter:  String.
-		//
-		//   Returns:    The string, with each instance of "--" translated to
-		//               an en-dash HTML entity, and each "---" translated to
-		//               an em-dash HTML entity.
-		//
-
 			text = text.Replace("---", EmDash);
 			text = text.Replace("--",  EnDash);
 
 			return text;
 		}
 
+
+		/// <summary>
+		/// Returns the input string, with each instance of "--" translated to
+		/// an em-dash HTML entity, and each "---" translated to
+		/// an en-dash HTML entity. Two reasons why: First, unlike the
+		/// en- and em-dash syntax supported by
+		/// EducateDashesOldSchool(), it's compatible with existing
+		/// entries written before SmartyPants 1.1, back when "--" was
+		/// only used for em-dashes.  Second, em-dashes are more
+		/// common than en-dashes, and so it sort of makes sense that
+		/// the shortcut should be shorter to type. (Thanks to Aaron
+		/// Swartz for the idea.)
+		/// </summary>
 		protected string EducateDashesOldSchoolInverted(string text)
 		{
-		//
-		//   Parameter:  String.
-		//
-		//   Returns:    The string, with each instance of "--" translated to
-		//               an em-dash HTML entity, and each "---" translated to
-		//               an en-dash HTML entity. Two reasons why: First, unlike the
-		//               en- and em-dash syntax supported by
-		//               EducateDashesOldSchool(), it's compatible with existing
-		//               entries written before SmartyPants 1.1, back when "--" was
-		//               only used for em-dashes.  Second, em-dashes are more
-		//               common than en-dashes, and so it sort of makes sense that
-		//               the shortcut should be shorter to type. (Thanks to Aaron
-		//               Swartz for the idea.)
-		//
-
 			text = text.Replace("---", EnDash);
 			text = text.Replace("--",  EmDash);
 
 			return text;
 		}
 
+
+		/// <summary>
+		/// Returns the input string, with each instance of "..." translated to
+		/// an ellipsis HTML entity. Also converts the case where
+		/// there are spaces between the dots.
+		///
+		/// Example input:  Huh...?
+		/// Example output: Huh&#8230;?
+		/// </summary>
 		protected string EducateEllipses(string text)
 		{
-		//
-		//   Parameter:  String.
-		//   Returns:    The string, with each instance of "..." translated to
-		//               an ellipsis HTML entity. Also converts the case where
-		//               there are spaces between the dots.
-		//
-		//   Example input:  Huh...?
-		//   Example output: Huh&#8230;?
-		//
-
 			text = text.Replace("...", Ellipsis);
 			text = text.Replace(". . .",  Ellipsis);
 
 			return text;
 		}
 
+
+		/// <summary>
+		/// Returns the input string, with each SmartyPants HTML entity translated to its ASCII counterpart.
+		///
+		/// Example input:  &#8220;Hello &#8212; world.&#8221;
+		/// Example output: "Hello -- world."
+		/// </summary>
 		protected string StupefyEntities(string text)
 		{
-		//
-		//   Parameter:  String.
-		//   Returns:    The string, with each SmartyPants HTML entity translated to
-		//               its ASCII counterpart.
-		//
-		//   Example input:  &#8220;Hello &#8212; world.&#8221;
-		//   Example output: "Hello -- world."
-		//
-
 			text = text.Replace(SmartDoubleQuoteOpen, "\"");
 			text = text.Replace(SmartDoubleQuoteClose, "\"");
 			text = text.Replace(SmartSingleQuoteOpen, "'");
@@ -399,24 +363,23 @@ namespace SmartyPantsNet
 			return text;
 		}
 
+
+		/// <summary>
+		/// Returns the input string, with after processing the following backslash
+		/// escape sequences. This is useful if you want to force a "dumb"
+		/// quote or other character to appear.
+		///
+		///  Escape  Value
+		///  ------  -----
+		///  \\      &#92;
+		///  \"      &#34;
+		///  \'      &#39;
+		///  \.      &#46;
+		///  \-      &#45;
+		///  \`      &#96;
+		/// </summary>
 		protected string ShieldEscapes(string text)
 		{
-		//
-		//   Parameter:  String.
-		//   Returns:    The string, with after processing the following backslash
-		//               escape sequences. This is useful if you want to force a "dumb"
-		//               quote or other character to appear.
-		//
-		//               Escape  Value
-		//               ------  -----
-		//               \\      &#92;
-		//               \"      &#34;
-		//               \'      &#39;
-		//               \.      &#46;
-		//               \-      &#45;
-		//               \`      &#96;
-		//
-
 			text = text.Replace("\\\\", "%%SMARTYPANTS_ESCAPED_BACKSLASH%%");
 			text = text.Replace("\\\"", "%%SMARTYPANTS_ESCAPED_DOUBLE_QUOTE%%");
 			text = text.Replace("\\'", "%%SMARTYPANTS_ESCAPED_SINGLE_QUOTE%%");
@@ -427,9 +390,9 @@ namespace SmartyPantsNet
 			return text;
 		}
 
+
 		protected string UnshieldEscapes(string text)
 		{
-
 			text = text.Replace("%%SMARTYPANTS_ESCAPED_BACKSLASH%%", "\\");
 			text = text.Replace("%%SMARTYPANTS_ESCAPED_DOUBLE_QUOTE%%", "\"");
 			text = text.Replace("%%SMARTYPANTS_ESCAPED_SINGLE_QUOTE%%", "'");
